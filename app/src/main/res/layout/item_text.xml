@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="10dp"
+    android:layout_marginLeft="10dp"
+    >
+    <TextView
+        android:id="@+id/tv_noidung"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="Bất chấp những nỗ lực, Buriram United vẫn hứng chịu thất bại với tỷ số 0-3 trước Urawa Reds. Với thất bại này, Buriram United tạm thời đứng cuối bảng G với 0 điểm."
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

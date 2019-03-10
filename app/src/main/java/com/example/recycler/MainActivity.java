@@ -1,76 +1,57 @@
 package com.example.recycler;
 
+import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.widget.TextView;
+import com.example.recycler.fragment.*;
 
-import com.example.recycler.api.Api;
+import com.example.recycler.api.ApiXML;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private ArrayList<String> listString;
+public class MainActivity extends AppCompatActivity{
+    private ArrayList<Fragment> listFragment;
+    private ArrayList<String> listTitle;
+    private FragmentManager fragmentManager;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = findViewById(R.id.recyleview_main);
 
-        ArrayList<Content> list = new ArrayList<>();
-        list.add(new Content(ContentState.STATE_TEXT,""));
-        list.add(new Content(ContentState.STATE_IMAGE,"",""));
-        list.add(new Content(ContentState.STATE_TEXT,""));
-        list.add(new Content(ContentState.STATE_TEXT,""));
+        test();
+    }
 
-        listString = new ArrayList<>();
-        listString.add("dang nam");
-        listString.add("dang nam");
-        listString.add("dang nam");
-        listString.add("dang nam");
-        listString.add("dang nam");
-        RecyclerApdapter recyclerApdapter = new RecyclerApdapter(this,list);
-        RecyclerAdapterMain adapterMain = new RecyclerAdapterMain(this,list);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
-
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int i) {
-                if (i % 2==0)
-                return 1;
-                else
-                return 2;
-            }
-        });
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
-
-        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                // 5 is the sum of items in one repeated section
-                switch (position % 4) {
-                    // first two items span 3 columns each
-                    case 0:
-                    case 1:
-                        return 4;
-                    // next 3 items span 2 columns each
-                    case 2:
-                    case 3:
-//                    case 4:
-                        return 2;
-                }
-                throw new IllegalStateException("internal error");
-            }
-        });
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapterMain);
-        new Api(this,"").getData();
+    public void test(){
+        listFragment = new ArrayList<>();
+        listTitle = new ArrayList<>();
+        listFragment.add(new FagmentTrangChu("https://vnexpress.net/rss/tin-moi-nhat.rss"));
+        listTitle.add("Tin moi");
+        listFragment.add(new FagmentTrangChu("https://vnexpress.net/rss/thoi-su.rss"));
+        listTitle.add("Thoi su");
+        listFragment.add(new FagmentTrangChu("https://vnexpress.net/rss/the-gioi.rss"));
+        listTitle.add("The gio");
+        listFragment.add(new FagmentTrangChu("https://vnexpress.net/rss/kinh-doanh.rss"));
+        listTitle.add("kink doanh");
+        listFragment.add(new FagmentTrangChu("https://vnexpress.net/rss/startup.rss"));
+        listTitle.add("startup");
+        listFragment.add(new FagmentTrangChu("https://vnexpress.net/rss/tin-moi-nhat.rss"));
+        listTitle.add("Tin moi");
+        listFragment.add(new FagmentTrangChu("https://vnexpress.net/rss/tin-moi-nhat.rss"));
+        listTitle.add("Tin moi");
+        listFragment.add(new FagmentTrangChu("https://vnexpress.net/rss/tin-moi-nhat.rss"));
+        listTitle.add("Tin moi");
+        viewPager = findViewById(R.id.viewpager);
+        tabLayout = findViewById(R.id.tablayout);
+        fragmentManager = getSupportFragmentManager();
+        PagerAdapter pagerAdapter = new PagerAdapter(fragmentManager,listFragment,listTitle);
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 }

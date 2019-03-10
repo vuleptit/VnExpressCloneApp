@@ -7,10 +7,11 @@
     android:orientation="vertical"
     android:padding="8dp">
     <ImageView
+        android:id="@+id/img_horizontal_item_img"
         android:scaleType="fitXY"
         android:layout_weight="1"
         android:src="@drawable/anh"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="120dp" />
     <LinearLayout
         android:weightSum="10"
@@ -18,12 +19,13 @@
         android:layout_width="match_parent"
         android:layout_height="80dp">
         <TextView
+            android:id="@+id/tv_horizontal_item_title"
             android:text="Thanh tra dao  sat hach,bang cap o to 13 tinh thanh"
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-
+            android:id="@+id/tv_horizontal_item_date"
             android:text="33 phut truoc"
             android:textSize="12sp"
             android:layout_width="match_parent"

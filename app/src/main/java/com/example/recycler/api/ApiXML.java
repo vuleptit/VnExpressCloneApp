@@ -7,7 +7,6 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.example.recycler.RssItem;
-import com.example.recycler.XMLDOMParser;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -29,8 +28,6 @@ import java.util.Locale;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import static android.support.constraint.Constraints.TAG;
 
 public class ApiXML {
     private DataApiXML dataApiXML;
@@ -88,10 +85,6 @@ public class ApiXML {
                 } catch (SAXException e) {
                     e.printStackTrace();
                 }
-                XMLDOMParser xmldomParser = new XMLDOMParser();
-                Document document = xmldomParser.getDocument(response);
-                String s = xmldomParser.getValue(document.getDocumentElement(),"title");
-              //  Log.d("test", s);
 
             }
 

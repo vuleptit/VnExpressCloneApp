@@ -35,10 +35,10 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
         View view;
         switch (i){
             case ContentState.STATE_VERTICAL:
-                view = layoutInflater.inflate(R.layout.item_1,viewGroup,false);
+                view = layoutInflater.inflate(R.layout.item_vertical,viewGroup,false);
                 return new RecyclerAdapterMain.ViewHorderVertical(view);
             case ContentState.STATE_HORIZONTAL:
-                view = layoutInflater.inflate(R.layout.item_2,viewGroup,false);
+                view = layoutInflater.inflate(R.layout.item_horizontal,viewGroup,false);
                 return new RecyclerAdapterMain.ViewHorderHorizontal(view);
         }
         return null;

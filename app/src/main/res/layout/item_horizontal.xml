@@ -21,11 +21,13 @@
         <TextView
             android:id="@+id/tv_horizontal_item_title"
             android:text="Thanh tra dao  sat hach,bang cap o to 13 tinh thanh"
+            android:textColor="@color/colorBlack"
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/tv_horizontal_item_date"
+            android:layout_marginTop="5dp"
             android:text="33 phut truoc"
             android:textSize="12sp"
             android:layout_width="match_parent"

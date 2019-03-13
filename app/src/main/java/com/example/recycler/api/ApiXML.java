@@ -54,24 +54,35 @@ public class ApiXML {
                         for(int j=0;j<listItem.getLength();j++){
                             Node item = listItem.item(j);
                             nodeName = item.getNodeName();
-                            if ("description".equals(nodeName)){
-                                String s = item.getLastChild().getNodeValue();
-                                getJsoupData(rssItem,s);
-                               // Log.d("nam", getJsoupData(s));
-                            }
-                            else if("title".equals(nodeName)){
-                                String s = item.getLastChild().getNodeValue();
-                                rssItem.setTitle(s);
-                            }
-                            else if("pubDate".equals(nodeName)){
-                                String s = item.getLastChild().getNodeValue();
-                                rssItem.setDate(setDate(s));
+                            try {
+                                if ("description".equals(nodeName)){
+                                    String s = item.getLastChild().getNodeValue();
+                                    Log.d("data", s+"\n");
+                                    getJsoupData(rssItem,s);
+                                     //Log.d("nam", getJsoupData(s));
+                                }
+                                else if("title".equals(nodeName)){
+                                    String s = item.getLastChild().getNodeValue();
+                                    if(s==null) s ="";
+                                    rssItem.setTitle(s);
+                                }
+                                else if("pubDate".equals(nodeName)){
+                                    String s = item.getLastChild().getNodeValue();
+                                    rssItem.setDate(setDate(s));
 //                                Log.d("nam",s);
+                                }
+                                else if("link".equals(nodeName)){
+                                    String s = item.getLastChild().getNodeValue();
+                                    rssItem.setLinkDetail(s);
+                                }
+                            }catch (Exception e){
+                                rssItem.setDescription("");
+                                rssItem.setLinkImage("");
+                                rssItem.setTitle("không có dữ liệu");
+                                rssItem.setDate(setDate("Wed, 13 Mar 2000 00:00:00 +0700"));
+                                rssItem.setLinkDetail("");
                             }
-                            else if("link".equals(nodeName)){
-                                String s = item.getLastChild().getNodeValue();
-                                rssItem.setLinkDetail(s);
-                            }
+
                         }
                         list.add(rssItem);
 

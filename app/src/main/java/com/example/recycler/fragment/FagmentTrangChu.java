@@ -10,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,8 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
     @SuppressLint("ValidFragment")
     public FagmentTrangChu(String link) {
         this.link = link;
+        apiXML = new ApiXML();
+        apiXML.setDataApiXML(this);
     }
 
     @Nullable
@@ -42,8 +45,6 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
         return view;
     }
     private void init(View view){
-        apiXML = new ApiXML();
-        apiXML.setDataApiXML(this);
         apiXML.getDataXML(link);
         recyclerView = view.findViewById(R.id.recyleview_trangchu);
 
@@ -79,5 +80,6 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
                 Intent intent = new Intent(getActivity(), Detail.class);
         intent.putExtra("linkDetail",rssItem.getLinkDetail());
         startActivity(intent);
+        //getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
     }
 }

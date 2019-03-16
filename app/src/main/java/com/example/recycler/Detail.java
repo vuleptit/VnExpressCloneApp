@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 
 import com.example.recycler.api.Api;
 import com.example.recycler.api.ApiXML;
+import com.r0adkll.slidr.Slidr;
+import com.r0adkll.slidr.model.SlidrInterface;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,7 @@ public class Detail extends AppCompatActivity implements Api.ApiData, View.OnCli
     private Api api;
     private BottomAppBar bottomAppBar;
     private ImageButton btnBack,btnSave,btnComment,btnShare;
+    private SlidrInterface slidrInterface;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,12 @@ public class Detail extends AppCompatActivity implements Api.ApiData, View.OnCli
         setSupportActionBar(bottomAppBar);
         setButton();
         init();
+        slidrInterface = Slidr.attach(this);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
     }
     private void init(){
         Intent intent = this.getIntent();
@@ -63,9 +72,16 @@ public class Detail extends AppCompatActivity implements Api.ApiData, View.OnCli
         switch (v.getId()){
             case R.id.btn_back:
                 finish();
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
                 break;
         }
     }
+    public void lockSlide(View v) {
+        slidrInterface.lock();
+    }
 
+    public void unlockSlide(View v) {
+        slidrInterface.unlock();
+    }
 
 }

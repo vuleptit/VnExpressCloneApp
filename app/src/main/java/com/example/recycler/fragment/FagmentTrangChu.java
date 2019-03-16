@@ -80,6 +80,6 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
                 Intent intent = new Intent(getActivity(), Detail.class);
         intent.putExtra("linkDetail",rssItem.getLinkDetail());
         startActivity(intent);
-        //getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+        getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
     }
 }

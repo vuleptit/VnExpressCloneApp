@@ -112,6 +112,7 @@ public class RecyclerApdapterDetail extends RecyclerView.Adapter {
             super(itemView);
             imageView = itemView.findViewById(R.id.img_conten_image);
             textView = itemView.findViewById(R.id.tv_conten_image);
+
         }
     }
 

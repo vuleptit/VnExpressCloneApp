@@ -1,14 +1,9 @@
 package com.example.recycler.api;
 
-import android.content.Context;
-import android.util.Log;
-
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
-import com.example.recycler.Content;
-import com.example.recycler.ContentState;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

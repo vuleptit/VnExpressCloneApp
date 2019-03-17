@@ -7,20 +7,15 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
-import com.example.recycler.Content;
-import com.example.recycler.ContentState;
+import com.example.recycler.entity1.Content;
+import com.example.recycler.State;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.xml.sax.InputSource;
 
-import java.io.StringReader;
 import java.util.ArrayList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 public class Api {
     private Context context;
@@ -44,15 +39,15 @@ public class Api {
                     Document document = Jsoup.parse(response);
                     if (link.contains("e.vnexpress.net")) {
                         Element sidebar = document.getElementsByClass("main_detail_page").first();
-                        list.add(new Content(ContentState.STATE_TEXT_TITLE, sidebar.getElementsByClass("block_title_detail").first().text()));
-                        list.add(new Content(ContentState.STATE_TEXT_TIME, sidebar.getElementsByClass("author").first().text()));
-                        list.add(new Content(ContentState.STATE_TEXT_DESCRIPTION, sidebar.getElementsByClass("lead_post_detail row").first().text()));
+                        list.add(new Content(State.STATE_TEXT_TITLE, sidebar.getElementsByClass("block_title_detail").first().text()));
+                        list.add(new Content(State.STATE_TEXT_TIME, sidebar.getElementsByClass("author").first().text()));
+                        list.add(new Content(State.STATE_TEXT_DESCRIPTION, sidebar.getElementsByClass("lead_post_detail row").first().text()));
                         Element element = sidebar.getElementsByClass("fck_detail").first();
                         if (sidebar.select("div.thumb_detail_top").first() != null) {
                             {
                                 String src = sidebar.select("div.thumb_detail_top > img").first().attr("src");
                                 String alt = sidebar.select("div.thumb_detail_top > img").first().attr("alt");
-                                list.add(new Content(ContentState.STATE_IMAGE, src, alt));
+                                list.add(new Content(State.STATE_IMAGE, src, alt));
                                 Log.d("test", src);
                             }
                         }
@@ -62,7 +57,7 @@ public class Api {
                             if (elements.select("p").first() != null) {
                                 String text = elements.select("p").first().html();
                                 Log.d("test", text);
-                                list.add(new Content(ContentState.STATE_TEXT_DETAIL, text));
+                                list.add(new Content(State.STATE_TEXT_DETAIL, text));
                             }
 
                         }
@@ -70,9 +65,9 @@ public class Api {
 
                         Element sidebar = document.getElementsByClass("sidebar_1").first();
 
-                        list.add(new Content(ContentState.STATE_TEXT_TITLE, sidebar.getElementsByClass("title_news_detail").first().text()));
-                        list.add(new Content(ContentState.STATE_TEXT_TIME, sidebar.getElementsByClass("time").first().text()));
-                        list.add(new Content(ContentState.STATE_TEXT_DESCRIPTION, sidebar.getElementsByClass("description").first().text()));
+                        list.add(new Content(State.STATE_TEXT_TITLE, sidebar.getElementsByClass("title_news_detail").first().text()));
+                        list.add(new Content(State.STATE_TEXT_TIME, sidebar.getElementsByClass("time").first().text()));
+                        list.add(new Content(State.STATE_TEXT_DESCRIPTION, sidebar.getElementsByClass("description").first().text()));
                         Element element = sidebar.getElementsByTag("article").first();
                         Elements ss = element.children();
 
@@ -81,13 +76,13 @@ public class Api {
                             if (elements.select("p").first() != null) {
                                 String text = elements.select("p").first().html();
                                 Log.d("test", text);
-                                list.add(new Content(ContentState.STATE_TEXT_DETAIL, text));
+                                list.add(new Content(State.STATE_TEXT_DETAIL, text));
                             }
                             if (elements.select("table").first() != null) {
                                 {
                                     String src = elements.select("table > tbody > tr > td > img").first().attr("src");
                                     String alt = elements.select("table > tbody > tr > td > img").first().attr("alt");
-                                    list.add(new Content(ContentState.STATE_IMAGE, src, alt));
+                                    list.add(new Content(State.STATE_IMAGE, src, alt));
                                     Log.d("test", src);
                                 }
                             }
@@ -96,7 +91,7 @@ public class Api {
                     }
                 } catch (Exception e) {
                     e.getMessage();
-                    list.add(new Content(ContentState.STATE_TEXT_DETAIL, "không lấy được dữ liệu"));
+                    list.add(new Content(State.STATE_TEXT_DETAIL, "không lấy được dữ liệu"));
                 }
                 apiData.setData(list);
             }

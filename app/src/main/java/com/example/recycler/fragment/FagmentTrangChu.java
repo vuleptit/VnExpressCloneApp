@@ -8,21 +8,21 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.recycler.Detail;
+import com.example.recycler.activity.DetailActivity;
 import com.example.recycler.R;
-import com.example.recycler.RecyclerAdapterMain;
-import com.example.recycler.RssItem;
+import com.example.recycler.adapter.RecyclerAdapterMain;
+import com.example.recycler.entity1.RssItem;
 import com.example.recycler.api.ApiXML;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 @SuppressLint("ValidFragment")
 public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,RecyclerAdapterMain.ClickListener{
@@ -77,8 +77,14 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
 
     @Override
     public void clickItem(int position, RssItem rssItem) {
-                Intent intent = new Intent(getActivity(), Detail.class);
+        DateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+        String s = rssItem.getLinkImage();
+        String linkImage = s.substring(s.lastIndexOf('/') + 1);
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("linkDetail",rssItem.getLinkDetail());
+        intent.putExtra("linkImage",linkImage);
+        intent.putExtra("date",dateFormat.format(rssItem.getDate()));
+        intent.putExtra("title",rssItem.getTitle());
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
     }

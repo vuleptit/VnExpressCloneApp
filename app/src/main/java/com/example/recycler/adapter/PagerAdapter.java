@@ -1,4 +1,4 @@
-package com.example.recycler;
+package com.example.recycler.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

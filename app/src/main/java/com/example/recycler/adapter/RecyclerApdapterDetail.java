@@ -1,4 +1,4 @@
-package com.example.recycler;
+package com.example.recycler.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.recycler.entity1.Content;
+import com.example.recycler.R;
+import com.example.recycler.State;
 
 import java.util.ArrayList;
 
@@ -32,17 +35,17 @@ public class RecyclerApdapterDetail extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
         switch (i) {
-            case ContentState.STATE_TEXT_DETAIL:
+            case State.STATE_TEXT_DETAIL:
                 view = layoutInflater.inflate(R.layout.item_text, viewGroup, false);
                 return new ViewHorderText(view);
-            case ContentState.STATE_IMAGE:
+            case State.STATE_IMAGE:
                 view = layoutInflater.inflate(R.layout.item_image, viewGroup, false);
                 return new ViewHoderImage(view);
-            case ContentState.STATE_TEXT_DESCRIPTION:
+            case State.STATE_TEXT_DESCRIPTION:
                 view = layoutInflater.inflate(R.layout.item_text, viewGroup, false);
                 return new ViewHorderText(view);
-            case ContentState.STATE_TEXT_TITLE:
-            case ContentState.STATE_TEXT_TIME:
+            case State.STATE_TEXT_TITLE:
+            case State.STATE_TEXT_TIME:
                 view = layoutInflater.inflate(R.layout.item_text, viewGroup, false);
                 return new ViewHorderText(view);
         }
@@ -52,29 +55,29 @@ public class RecyclerApdapterDetail extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHorder, int i) {
         switch (list.get(i).getState()) {
-            case ContentState.STATE_TEXT_DETAIL:
+            case State.STATE_TEXT_DETAIL:
                 ViewHorderText viewHorderText = (ViewHorderText) viewHorder;
                 viewHorderText.textView.setText(Html.fromHtml(list.get(i).getText()));
                 break;
-            case ContentState.STATE_IMAGE:
+            case State.STATE_IMAGE:
                 ViewHoderImage viewHoderImage = (ViewHoderImage) viewHorder;
                 viewHoderImage.textView.setText(list.get(i).getTextImage());
                 Glide.with(context).load(list.get(i).getLinkImage()).into(viewHoderImage.imageView);
                 break;
-            case ContentState.STATE_TEXT_DESCRIPTION:
+            case State.STATE_TEXT_DESCRIPTION:
                 ViewHorderText textDescroption = (ViewHorderText) viewHorder;
                 textDescroption.textView.setTextSize(18);
                 textDescroption.textView.setTypeface(Typeface.DEFAULT_BOLD);
                 textDescroption.textView.setText(list.get(i).getText());
                 break;
-            case ContentState.STATE_TEXT_TITLE:
+            case State.STATE_TEXT_TITLE:
                 ViewHorderText textTitle = (ViewHorderText) viewHorder;
                 textTitle.textView.setTextSize(22);
                 textTitle.textView.setTextColor(Color.rgb(165,0,25));
                 textTitle.textView.setTypeface(Typeface.DEFAULT_BOLD);
                 textTitle.textView.setText(list.get(i).getText());
                 break;
-            case ContentState.STATE_TEXT_TIME:
+            case State.STATE_TEXT_TIME:
                 ViewHorderText textTime = (ViewHorderText) viewHorder;
                 textTime.textView.setTextSize(12);
                 textTime.textView.setTextColor(Color.rgb(145,145,145));

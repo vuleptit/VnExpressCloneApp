@@ -6,7 +6,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
-import com.example.recycler.RssItem;
+import com.example.recycler.entity1.RssItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;

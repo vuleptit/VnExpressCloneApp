@@ -1,4 +1,4 @@
-package com.example.recycler;
+package com.example.recycler.entity1;
 
 import android.util.Log;
 

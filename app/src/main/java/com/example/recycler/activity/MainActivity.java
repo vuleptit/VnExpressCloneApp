@@ -1,6 +1,5 @@
-package com.example.recycler;
+package com.example.recycler.activity;
 
-import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +12,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.example.recycler.R;
+import com.example.recycler.adapter.PagerAdapter;
 import com.example.recycler.api.ApiTheLoai;
 import com.example.recycler.fragment.*;
 

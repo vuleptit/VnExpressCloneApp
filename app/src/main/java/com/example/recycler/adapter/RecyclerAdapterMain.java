@@ -1,4 +1,4 @@
-package com.example.recycler;
+package com.example.recycler.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.recycler.R;
+import com.example.recycler.entity1.RssItem;
+import com.example.recycler.State;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,10 +37,10 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
         switch (i){
-            case ContentState.STATE_VERTICAL:
+            case State.STATE_VERTICAL:
                 view = layoutInflater.inflate(R.layout.item_vertical,viewGroup,false);
                 return new RecyclerAdapterMain.ViewHorderVertical(view);
-            case ContentState.STATE_HORIZONTAL:
+            case State.STATE_HORIZONTAL:
                 view = layoutInflater.inflate(R.layout.item_horizontal,viewGroup,false);
                 return new RecyclerAdapterMain.ViewHorderHorizontal(view);
         }
@@ -75,12 +78,12 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
         switch (position%4) {
             case 0:
             case 1:
-                return ContentState.STATE_VERTICAL;
+                return State.STATE_VERTICAL;
             case 2:
             case 3:
-                return ContentState.STATE_HORIZONTAL;
+                return State.STATE_HORIZONTAL;
         }
-        return ContentState.STATE_VERTICAL;
+        return State.STATE_VERTICAL;
     }
 
     public class ViewHorderHorizontal extends RecyclerView.ViewHolder implements View.OnClickListener {

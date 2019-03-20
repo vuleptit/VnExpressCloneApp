@@ -1,8 +1,11 @@
 package com.example.recycler.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.recycler.R;
 import com.example.recycler.entity1.Article;
+
+import java.io.FileInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -43,6 +48,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         viewHolder.title.setText(list.get(i).getTitle());
         viewHolder.date.setText(list.get(i).getDate());
+        String link = list.get(i).getLinkImage();
+        if(link!=""){
+            Bitmap bitmap = loadImageBitmap(context.getApplicationContext(),link);
+            Glide.with(context.getApplicationContext()).load(bitmap).into(viewHolder.imageView);
+        }
+
        // Glide.with(context).load(list.get(i).getLinkImage()).into(viewHolder.imageView);
     }
 
@@ -70,6 +81,28 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         public void onClick(View v) {
             clickListener.clickItem(getAdapterPosition(),list.get(getAdapterPosition()));
         }
+    }
+    public Bitmap loadImageBitmap(Context context, String imageName) {
+        Bitmap bitmap = null;
+        FileInputStream fiStream;
+        try {
+            fiStream    = context.openFileInput(imageName);
+            bitmap      = BitmapFactory.decodeStream(fiStream);
+            fiStream.close();
+        } catch (Exception e) {
+            Log.d("saveImage", "Exception 3, Something went wrong!");
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+    public void removeItem(int position) {
+        list.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Article article, int position) {
+        list.add(position, article);
+        notifyItemInserted(position);
     }
     public interface ClickListener{
         public void clickItem(int position,Article article);

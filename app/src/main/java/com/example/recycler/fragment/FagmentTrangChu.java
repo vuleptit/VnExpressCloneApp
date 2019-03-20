@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.recycler.State;
 import com.example.recycler.activity.DetailActivity;
 import com.example.recycler.R;
 import com.example.recycler.adapter.RecyclerAdapterMain;
@@ -49,18 +50,22 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
         recyclerView = view.findViewById(R.id.recyleview_trangchu);
 
 
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 4);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 // 5 is the sum of items in one repeated section
-                switch (position % 4) {
-                    case 0:
-                    case 1:
-                        return 4;
-                    case 2:
-                    case 3:
-                        return 2;
+                if(position==0){
+                    return 2;
+                }else {
+                    switch ((position - 1) % 4) {
+                        case 0:
+                        case 1:
+                            return 2;
+                        case 2:
+                        case 3:
+                            return 1;
+                    }
                 }
                 throw new IllegalStateException("internal error");
             }
@@ -79,12 +84,12 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
     public void clickItem(int position, RssItem rssItem) {
         DateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
         String s = rssItem.getLinkImage();
-        String linkImage = s.substring(s.lastIndexOf('/') + 1);
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra("linkDetail",rssItem.getLinkDetail());
-        intent.putExtra("linkImage",linkImage);
+        intent.putExtra("linkImage",s);
         intent.putExtra("date",dateFormat.format(rssItem.getDate()));
         intent.putExtra("title",rssItem.getTitle());
+        intent.putExtra("state", State.STATE_INTERNET);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
     }

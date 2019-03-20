@@ -5,7 +5,7 @@
     android:weightSum="10"
     android:background="@color/colorWhite"
     android:orientation="horizontal"
-    android:padding="8dp">
+    android:padding="@dimen/_5sdp">
     <ImageView
         android:id="@+id/img_vertical_item_img"
         android:scaleType="fitXY"

@@ -21,4 +21,8 @@ public interface DescriptionDao {
     void delete(Description description);
     @Query("Select * FROM description WHERE id_article == :ariticleId")
     List<Description> getAllDescription(int ariticleId);
+    @Query("Select * FROM description WHERE id_article == :ariticleId AND state = 2")
+    List<Description> getListImageDescription(int ariticleId);
+    @Query("DELETE FROM description WHERE id_article == :ariticleId")
+    void deleteAll(int ariticleId);
 }

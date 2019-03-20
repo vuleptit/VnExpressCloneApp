@@ -1,11 +1,14 @@
 package com.example.recycler.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import com.example.recycler.entity1.Content;
 import com.example.recycler.R;
 import com.example.recycler.State;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 public class RecyclerApdapterDetail extends RecyclerView.Adapter {
@@ -62,7 +66,13 @@ public class RecyclerApdapterDetail extends RecyclerView.Adapter {
             case State.STATE_IMAGE:
                 ViewHoderImage viewHoderImage = (ViewHoderImage) viewHorder;
                 viewHoderImage.textView.setText(list.get(i).getTextImage());
-                Glide.with(context).load(list.get(i).getLinkImage()).into(viewHoderImage.imageView);
+                String link = list.get(i).getLinkImage();
+                if(link.lastIndexOf("/")!=-1) {
+                    Glide.with(context).load(link).into(viewHoderImage.imageView);
+                }else {
+                    Bitmap bitmap = loadImageBitmap(context.getApplicationContext(),link);
+                    Glide.with(context.getApplicationContext()).load(bitmap).into(viewHoderImage.imageView);
+                }
                 break;
             case State.STATE_TEXT_DESCRIPTION:
                 ViewHorderText textDescroption = (ViewHorderText) viewHorder;
@@ -105,7 +115,19 @@ public class RecyclerApdapterDetail extends RecyclerView.Adapter {
             textView = itemView.findViewById(R.id.tv_noidung);
         }
     }
-
+    public Bitmap loadImageBitmap(Context context, String imageName) {
+        Bitmap bitmap = null;
+        FileInputStream fiStream;
+        try {
+            fiStream    = context.openFileInput(imageName);
+            bitmap      = BitmapFactory.decodeStream(fiStream);
+            fiStream.close();
+        } catch (Exception e) {
+            Log.d("saveImage", "Exception 3, Something went wrong!");
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
     public class ViewHoderImage extends RecyclerView.ViewHolder {
 
         ImageView imageView;

@@ -1,32 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="@dimen/_200sdp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/colorWhite"
-    android:padding="@dimen/_5sdp">
+    >
     <ImageView
-        android:id="@+id/img_horizontal_item_img"
-        android:scaleType="fitXY"
+        android:id="@+id/img_home_item_img"
+        android:adjustViewBounds="true"
         android:layout_weight="1"
         android:src="@drawable/anh"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_120sdp" />
+        android:layout_height="@dimen/_200sdp" />
     <LinearLayout
-        android:weightSum="10"
+        android:paddingRight="@dimen/_5sdp"
+        android:paddingLeft="@dimen/_5sdp"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_80sdp">
+        android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/tv_horizontal_item_title"
+            android:id="@+id/tv_home_item_title"
             android:text="Thanh tra dao  sat hach,bang cap o to 13 tinh thanh"
             android:textColor="@color/colorBlack"
             android:textSize="16sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/tv_horizontal_item_date"
-            android:layout_marginTop="5dp"
+            android:id="@+id/tv_home_item_description"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Sau hơn một thập niên, cái chết của Jang Ja Yun, Choi Jin Sil, Jung Dabin và Lee Eun Joo vẫn ám ảnh dư luận Hàn Quốc."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_home_item_date"
+            android:layout_marginTop="@dimen/_5sdp"
             android:text="33 phut truoc"
             android:textSize="12sp"
             android:layout_width="match_parent"

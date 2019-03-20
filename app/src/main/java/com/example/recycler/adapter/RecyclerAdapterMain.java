@@ -23,48 +23,60 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
     private LayoutInflater layoutInflater;
     private Context context;
     private ClickListener clickListener;
-    DateFormat dateFormat ;
-    public RecyclerAdapterMain(Context context,ClickListener clickListener, ArrayList<RssItem> list) {
+    DateFormat dateFormat;
+
+    public RecyclerAdapterMain(Context context, ClickListener clickListener, ArrayList<RssItem> list) {
         this.layoutInflater = LayoutInflater.from(context);
         this.list = list;
         this.context = context;
         this.clickListener = clickListener;
-        this.dateFormat  = new SimpleDateFormat("dd-MM yyyy HH:mm");
+        this.dateFormat = new SimpleDateFormat("dd-MM yyyy HH:mm");
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
-        switch (i){
+        switch (i) {
             case State.STATE_VERTICAL:
-                view = layoutInflater.inflate(R.layout.item_vertical,viewGroup,false);
+                view = layoutInflater.inflate(R.layout.item_vertical, viewGroup, false);
                 return new RecyclerAdapterMain.ViewHorderVertical(view);
             case State.STATE_HORIZONTAL:
-                view = layoutInflater.inflate(R.layout.item_horizontal,viewGroup,false);
+                view = layoutInflater.inflate(R.layout.item_horizontal, viewGroup, false);
                 return new RecyclerAdapterMain.ViewHorderHorizontal(view);
+            case State.STATE_HOME:
+                view = layoutInflater.inflate(R.layout.item_home, viewGroup, false);
+                return new RecyclerAdapterMain.ViewHorderHome(view);
         }
         return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHorder, int i) {
-        switch (i%4) {
-            case 0:
-            case 1:
-                ViewHorderVertical horderVertical = (ViewHorderVertical) viewHorder;
-                horderVertical.title.setText(list.get(i).getTitle());
-                horderVertical.date.setText(dateFormat.format(list.get(i).getDate()));
-                Glide.with(context).load(list.get(i).getLinkImage()).into(horderVertical.imageView);
-                break;
-            case 2:
-            case 3:
-                ViewHorderHorizontal horderHorizontal = (ViewHorderHorizontal) viewHorder;
-                horderHorizontal.title.setText(list.get(i).getTitle());
-                horderHorizontal.date.setText(dateFormat.format(list.get(i).getDate()));
-                Glide.with(context).load(list.get(i).getLinkImage()).into(horderHorizontal.imageView);
-                break;
+        if (i == 0) {
+            ViewHorderHome viewHorderHome = (ViewHorderHome) viewHorder;
+            viewHorderHome.title.setText(list.get(i).getTitle());
+            viewHorderHome.date.setText(dateFormat.format(list.get(i).getDate()));
+            viewHorderHome.description.setText(list.get(i).getDescription());
+            Glide.with(context).load(list.get(i).getLinkImage()).into(viewHorderHome.imageView);
+        } else {
+            switch ((i-1) % 4) {
+                case 0:
+                case 1:
+                    ViewHorderVertical horderVertical = (ViewHorderVertical) viewHorder;
+                    horderVertical.title.setText(list.get(i).getTitle());
+                    horderVertical.date.setText(dateFormat.format(list.get(i).getDate()));
+                    Glide.with(context).load(list.get(i).getLinkImage()).into(horderVertical.imageView);
+                    break;
+                case 2:
+                case 3:
+                    ViewHorderHorizontal horderHorizontal = (ViewHorderHorizontal) viewHorder;
+                    horderHorizontal.title.setText(list.get(i).getTitle());
+                    horderHorizontal.date.setText(dateFormat.format(list.get(i).getDate()));
+                    Glide.with(context).load(list.get(i).getLinkImage()).into(horderHorizontal.imageView);
+                    break;
 
+            }
         }
     }
 
@@ -75,20 +87,25 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        switch (position%4) {
-            case 0:
-            case 1:
-                return State.STATE_VERTICAL;
-            case 2:
-            case 3:
-                return State.STATE_HORIZONTAL;
+        if (position == 0) {
+            return State.STATE_HOME;
+        } else {
+            switch ((position - 1) % 4) {
+                case 0:
+                case 1:
+                    return State.STATE_VERTICAL;
+                case 2:
+                case 3:
+                    return State.STATE_HORIZONTAL;
+            }
         }
         return State.STATE_VERTICAL;
     }
 
     public class ViewHorderHorizontal extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title,date;
+        TextView title, date;
         ImageView imageView;
+
         public ViewHorderHorizontal(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_horizontal_item_title);
@@ -99,13 +116,33 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
-            clickListener.clickItem(getAdapterPosition(),list.get(getAdapterPosition()));
+            clickListener.clickItem(getAdapterPosition(), list.get(getAdapterPosition()));
+        }
+    }
+
+    public class ViewHorderHome extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView title, date, description;
+        ImageView imageView;
+
+        public ViewHorderHome(@NonNull View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.tv_home_item_title);
+            date = itemView.findViewById(R.id.tv_home_item_date);
+            description = itemView.findViewById(R.id.tv_home_item_description);
+            imageView = itemView.findViewById(R.id.img_home_item_img);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            clickListener.clickItem(getAdapterPosition(), list.get(getAdapterPosition()));
         }
     }
 
     public class ViewHorderVertical extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView title,date;
+        TextView title, date;
         ImageView imageView;
+
         public ViewHorderVertical(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_vertical_item_title);
@@ -116,10 +153,11 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
-            clickListener.clickItem(getAdapterPosition(),list.get(getAdapterPosition()));
+            clickListener.clickItem(getAdapterPosition(), list.get(getAdapterPosition()));
         }
     }
-    public interface ClickListener{
-        public void clickItem(int position,RssItem rssItem);
+
+    public interface ClickListener {
+        public void clickItem(int position, RssItem rssItem);
     }
 }

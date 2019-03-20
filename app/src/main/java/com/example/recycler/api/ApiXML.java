@@ -78,13 +78,16 @@ public class ApiXML {
                             }catch (Exception e){
                                 rssItem.setDescription("");
                                 rssItem.setLinkImage("");
-                                rssItem.setTitle("không có dữ liệu");
+                                rssItem.setTitle("");
                                 rssItem.setDate(setDate("Wed, 13 Mar 2000 00:00:00 +0700"));
                                 rssItem.setLinkDetail("");
                             }
 
                         }
-                        list.add(rssItem);
+                        if(rssItem.getTitle()!=""){
+                            list.add(rssItem);
+                        }
+
 
                     }
                     Log.d("nam", list.get(10).getDescription());

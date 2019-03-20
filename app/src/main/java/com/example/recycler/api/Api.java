@@ -70,6 +70,7 @@ public class Api {
                         list.add(new Content(State.STATE_TEXT_DESCRIPTION, sidebar.getElementsByClass("description").first().text()));
                         Element element = sidebar.getElementsByTag("article").first();
                         Elements ss = element.children();
+                        Elements elementsImage = sidebar.getElementsByClass("block_thumb_slide_show");
 
                         for (Element elements : ss) {
 //                    Element elements1 = elements.select("tbody > tr > td > img").first();
@@ -82,6 +83,16 @@ public class Api {
                                 {
                                     String src = elements.select("table > tbody > tr > td > img").first().attr("src");
                                     String alt = elements.select("table > tbody > tr > td > img").first().attr("alt");
+                                    list.add(new Content(State.STATE_IMAGE, src, alt));
+                                    Log.d("test", src);
+                                }
+                            }
+                        }
+                        for(Element element1: elementsImage){
+                            if (element1.select("img").first() != null) {
+                                {
+                                    String src = element1.select("img").first().attr("src");
+                                    String alt = element1.select("img").first().attr("alt");
                                     list.add(new Content(State.STATE_IMAGE, src, alt));
                                     Log.d("test", src);
                                 }

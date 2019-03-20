@@ -1,5 +1,8 @@
 package com.example.recycler.activity;
 
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.example.recycler.R;
 import com.example.recycler.adapter.PagerAdapter;
@@ -20,13 +24,14 @@ import com.example.recycler.fragment.*;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ApiTheLoai.ApiTheLoaiData{
+public class MainActivity extends AppCompatActivity implements ApiTheLoai.ApiTheLoaiData, NavigationView.OnNavigationItemSelectedListener {
     private ArrayList<Fragment> listFragment;
     private ArrayList<String> listTitle;
     private FragmentManager fragmentManager;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private ApiTheLoai apiTheLoai;
+    private NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,14 +39,17 @@ public class MainActivity extends AppCompatActivity implements ApiTheLoai.ApiThe
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+        navigationView = findViewById(R.id.navigation_main);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.setDrawerIndicatorEnabled(true);
         drawerToggle.syncState();
         test();
         apiTheLoai = new ApiTheLoai(this);
-        apiTheLoai.getData("https://vnexpress.net/rss");
+        apiTheLoai.theloai();
+        if(navigationView!=null){
+            navigationView.setNavigationItemSelectedListener(this);
+        }
     }
 
     public void test(){
@@ -69,5 +77,15 @@ public class MainActivity extends AppCompatActivity implements ApiTheLoai.ApiThe
         PagerAdapter pagerAdapter = new PagerAdapter(fragmentManager,listFragment,listName);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        if(id==R.id.nav_history){
+            Intent intent = new Intent(MainActivity.this,HistoryActivity.class);
+            startActivity(intent);
+        }
+        return true;
     }
 }

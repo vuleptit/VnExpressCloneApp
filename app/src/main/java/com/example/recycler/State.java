@@ -11,5 +11,8 @@ public class State {
     public static final int STATE_TEXT_TIME= 7;
     public static final int STATE_HISTORY= 8;
     public static final int STATE_DOWNLOAD= 9;
+    public static final int STATE_INTERNET=10;
+    public static final int STATE_OFFLINE=11;
+    public static final int STATE_HOME = 12;
 
 }

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/colorWhite"
+    android:paddingBottom="@dimen/_2sdp"
     >
     <ImageView
         android:id="@+id/img_home_item_img"
@@ -11,8 +12,9 @@
         android:layout_weight="1"
         android:src="@drawable/anh"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp" />
+        android:layout_height="wrap_content" />
     <LinearLayout
+        android:paddingTop="@dimen/_8sdp"
         android:paddingRight="@dimen/_5sdp"
         android:paddingLeft="@dimen/_5sdp"
         android:orientation="vertical"

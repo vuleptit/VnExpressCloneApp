@@ -27,6 +27,7 @@ import com.example.recycler.entity1.Article;
 import com.example.recycler.entity1.Content;
 import com.example.recycler.entity1.Description;
 import com.example.recycler.entity1.RssItem;
+import com.example.recycler.fragment.FragmentDownload;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrInterface;
 
@@ -102,6 +103,7 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
         article.setTitle(intent.getStringExtra("title"));
         listRss = (ArrayList<RssItem>)intent.getSerializableExtra("list");
         Log.d("listrss",listRss.get(0).getDescription());
+      //
     }
     private void setButton(){
         btnBack = findViewById(R.id.btn_back);
@@ -123,6 +125,7 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
         this.listContents = listContent;
         RecyclerApdapterDetail apdapter = new RecyclerApdapterDetail(getApplicationContext(),listContent,this);
         recyclerView.setAdapter(apdapter);
+        saveHistory();
     }
 
     @Override
@@ -133,13 +136,14 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
                 overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
                 break;
             case R.id.btn_save:
-                saveData();
+                saveData(State.STATE_DOWNLOAD);
+                Toast.makeText(this,"Đã lưu",Toast.LENGTH_LONG).show();
                 break;
             case R.id.btn_comment:
                 loadOffline();
                 break;
             case R.id.btn_share:
-                Intent intent = new Intent(DetailActivity.this,HistoryActivity.class);
+                Intent intent = new Intent(DetailActivity.this, FragmentDownload.class);
                 startActivity(intent);
                 break;
         }
@@ -179,8 +183,8 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
         }
         setData(arrayList);
     }
-    private void saveData(){
-
+    private void saveData(int state){
+        article.setState(state);
         appDataBase.articleDao().insert(article);
         loadImage(linkImage,article.getLinkImage());
         int id = appDataBase.articleDao().getLastArticle().getId();
@@ -199,7 +203,7 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
             }
 
         }
-        Toast.makeText(this,"Đã lưu",Toast.LENGTH_LONG).show();
+
 
     }
     public void loadImage(String link,final String name){
@@ -228,7 +232,39 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
             e.printStackTrace();
         }
     }
+    private void saveHistory(){
+        boolean check = true;
+        List<Article> listArticle = appDataBase.articleDao().getAllArticleState(State.STATE_HISTORY);
+        for(Article article1: listArticle){
+            if(article1.getTitle().equals(article.getTitle())){
+                check = false;
+            }
+        }
+        if(check ==true){
+            if(listArticle.size()>10){
+                deleteData(listArticle.get(0));
+            }
+            saveData(State.STATE_HISTORY);
+        }
 
+    }
+    private void deleteData(Article deletedItem){
+        List<Description> listDescriptions = appDataBase.descriptionDao().getListImageDescription(deletedItem.getId());
+        for (Description description : listDescriptions) {
+            deleteFIle(description.getContent());
+
+        }
+        deleteFIle(deletedItem.getLinkImage());
+        appDataBase.descriptionDao().deleteAll(deletedItem.getId());
+        appDataBase.articleDao().delete(deletedItem);
+    }
+    private void deleteFIle(String name){
+        try {
+            getApplicationContext().deleteFile(name);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
     @Override
     public void clickItem(int poisition, Content content) {
         api.getData(content.getLinkDetail());

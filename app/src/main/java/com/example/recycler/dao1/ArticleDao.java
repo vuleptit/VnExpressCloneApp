@@ -21,7 +21,8 @@ public interface ArticleDao {
     void delete(Article article);
     @Query("SELECT * FROM article")
     List<Article> getAllArticle();
-
+    @Query("SELECT * FROM article WHERE state = :state")
+    List<Article> getAllArticleState(int state);
     @Query("SELECT * FROM article ORDER BY id DESC LIMIT 1")
     Article getLastArticle();
 

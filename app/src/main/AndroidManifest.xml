@@ -24,10 +24,7 @@
                  >
 
         </activity>
-        <activity android:name=".activity.HistoryActivity"
-            android:theme="@style/AppTheme">
 
-        </activity>
     </application>
 
 </manifest>

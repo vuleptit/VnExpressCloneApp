@@ -45,7 +45,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
     private HistoryAdapter adapter;
     private AppDataBase appDataBase;
     private ConstraintLayout constraintLayout;
-
+    private ArrayList<Article> listDelete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +59,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         list = appDataBase.articleDao().getAllArticle();
         adapter = new HistoryAdapter(getApplicationContext(), this, list);
         recyclerView.setAdapter(adapter);
-
+        listDelete = new ArrayList<>();
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
@@ -85,6 +85,20 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
         new ItemTouchHelper(itemTouchHelperCallback1).attachToRecyclerView(recyclerView);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        for (Article deletedItem:listDelete){
+            List<Description> listDescriptions = appDataBase.descriptionDao().getListImageDescription(deletedItem.getId());
+            for (Description description : listDescriptions) {
+                deleteFIle(description.getContent());
+
+            }
+            deleteFIle(deletedItem.getLinkImage());
+            appDataBase.descriptionDao().deleteAll(deletedItem.getId());
+            appDataBase.articleDao().delete(deletedItem);
+        }
+    }
 
     @Override
     public void clickItem(int position, Article article) {
@@ -106,14 +120,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
             final int deletedIndex = viewHolder.getAdapterPosition();
 
             adapter.removeItem(viewHolder.getAdapterPosition());
-            List<Description> listDescriptions = appDataBase.descriptionDao().getListImageDescription(deletedItem.getId());
-            for (Description description : listDescriptions) {
-                deleteFIle(description.getContent());
-
-            }
-            deleteFIle(deletedItem.getLinkImage());
-            appDataBase.descriptionDao().deleteAll(deletedItem.getId());
-            appDataBase.articleDao().delete(deletedItem);
+            listDelete.add(deletedItem);
 
 
             Snackbar snackbar = Snackbar
@@ -123,7 +130,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryAdapter
                 public void onClick(View view) {
 
                     adapter.restoreItem(deletedItem, deletedIndex);
-                    appDataBase.articleDao().insert(deletedItem);
+                    listDelete.remove(listDelete.size()-1);
                 }
             });
             snackbar.setActionTextColor(Color.YELLOW);

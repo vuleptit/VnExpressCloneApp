@@ -14,5 +14,6 @@ public class State {
     public static final int STATE_INTERNET=10;
     public static final int STATE_OFFLINE=11;
     public static final int STATE_HOME = 12;
+    public static final int STATE_PAGING =13;
 
 }

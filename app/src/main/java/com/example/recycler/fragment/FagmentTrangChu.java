@@ -31,11 +31,13 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
     private ApiXML apiXML;
     private RecyclerAdapterMain recyclerAdapterMain;
     private String link;
+    private ArrayList<RssItem> list;
     @SuppressLint("ValidFragment")
     public FagmentTrangChu(String link) {
         this.link = link;
         apiXML = new ApiXML();
         apiXML.setDataApiXML(this);
+        list = new ArrayList<>();
     }
 
     @Nullable
@@ -77,6 +79,13 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
     public void setData(ArrayList<RssItem> listRssItem) {
         RecyclerAdapterMain adapterMain = new RecyclerAdapterMain(getContext(),this,listRssItem);
         recyclerView.setAdapter(adapterMain);
+        int i = 0;
+        for(RssItem rssItem: listRssItem){
+            if(i<5){
+                list.add(rssItem);
+            }
+            i++;
+        }
     }
 
 
@@ -90,6 +99,7 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
         intent.putExtra("date",dateFormat.format(rssItem.getDate()));
         intent.putExtra("title",rssItem.getTitle());
         intent.putExtra("state", State.STATE_INTERNET);
+        intent.putExtra("list",list);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
     }

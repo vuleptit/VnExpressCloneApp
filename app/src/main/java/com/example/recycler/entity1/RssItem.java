@@ -2,12 +2,13 @@ package com.example.recycler.entity1;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class RssItem {
+public class RssItem implements Serializable {
     private String title;
     private String linkDetail;
     private String linkImage;

@@ -18,7 +18,6 @@ import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.BitmapRequestListener;
-import com.bumptech.glide.Glide;
 import com.example.recycler.R;
 import com.example.recycler.State;
 import com.example.recycler.adapter.RecyclerApdapterDetail;
@@ -27,6 +26,7 @@ import com.example.recycler.database1.AppDataBase;
 import com.example.recycler.entity1.Article;
 import com.example.recycler.entity1.Content;
 import com.example.recycler.entity1.Description;
+import com.example.recycler.entity1.RssItem;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrInterface;
 
@@ -34,7 +34,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity implements Api.ApiData, View.OnClickListener {
+public class DetailActivity extends AppCompatActivity implements Api.ApiData, View.OnClickListener,RecyclerApdapterDetail.OnclickListener {
     private RecyclerView recyclerView;
     private Api api;
     private BottomAppBar bottomAppBar;
@@ -42,6 +42,7 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
     private SlidrInterface slidrInterface;
     private List<Description> listDescription;
     private ArrayList<Content> listContents;
+    private ArrayList<RssItem> listRss;
     private AppDataBase appDataBase;
     private Article article;
     private String linkImage;
@@ -84,7 +85,7 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
-
+        listRss = new ArrayList<>();
 
     }
 
@@ -96,9 +97,11 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
         article = new Article("","","", State.STATE_HISTORY);
         article.setDate(intent.getStringExtra("date"));
         linkImage =intent.getStringExtra("linkImage");
-        String s = linkImage.substring(linkImage.lastIndexOf("/ ") + 1);
+        String s = linkImage.substring(linkImage.lastIndexOf('/') + 1);
         article.setLinkImage(s);
         article.setTitle(intent.getStringExtra("title"));
+        listRss = (ArrayList<RssItem>)intent.getSerializableExtra("list");
+        Log.d("listrss",listRss.get(0).getDescription());
     }
     private void setButton(){
         btnBack = findViewById(R.id.btn_back);
@@ -113,8 +116,12 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
     }
     @Override
     public void setData(ArrayList<Content> listContent) {
+        listContent.add(new Content(State.STATE_PAGING,""));
+        for (RssItem rssItem:listRss){
+            listContent.add(new Content(State.STATE_VERTICAL,rssItem.getLinkImage(),rssItem.getTitle(),rssItem.getDate(),rssItem.getLinkDetail()));
+        }
         this.listContents = listContent;
-        RecyclerApdapterDetail apdapter = new RecyclerApdapterDetail(getApplicationContext(),listContent);
+        RecyclerApdapterDetail apdapter = new RecyclerApdapterDetail(getApplicationContext(),listContent,this);
         recyclerView.setAdapter(apdapter);
     }
 
@@ -222,4 +229,8 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
         }
     }
 
+    @Override
+    public void clickItem(int poisition, Content content) {
+        api.getData(content.getLinkDetail());
+    }
 }

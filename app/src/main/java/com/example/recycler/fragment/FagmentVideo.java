@@ -15,40 +15,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.recycler.R;
 import com.example.recycler.State;
 import com.example.recycler.activity.DetailActivity;
-import com.example.recycler.R;
+import com.example.recycler.activity.VideoActivity;
 import com.example.recycler.adapter.RecyclerAdapterMain;
-import com.example.recycler.entity1.RssItem;
+import com.example.recycler.adapter.RecyclerAdapterVideo;
+import com.example.recycler.api.ApiVideo;
 import com.example.recycler.api.ApiXML;
+import com.example.recycler.entity1.RssItem;
+import com.example.recycler.entity1.Video;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import static android.support.constraint.Constraints.TAG;
-
-public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,RecyclerAdapterMain.ClickListener{
+public class FagmentVideo extends Fragment implements ApiVideo.DataApiVideo,RecyclerAdapterVideo.ClickListener{
     private RecyclerView recyclerView;
-    private ApiXML apiXML;
+    private ApiVideo apiVideo;
     private RecyclerAdapterMain recyclerAdapterMain;
     private String link;
     private ArrayList<RssItem> list;
-    private GridLayoutManager layoutManager;
+    private ArrayList<Video> listState;
     private LinearLayoutManager linearLayoutManager;
-    private ArrayList<RssItem> listState;
-    private RecyclerAdapterMain adapterMain;
-    public static String TAG = "FagmentTrangChu";
-    public FagmentTrangChu() {
-        apiXML = new ApiXML();
-        apiXML.setDataApiXML(this);
-        list = new ArrayList<>();
+    RecyclerAdapterVideo adapterVideo;
+    private static final String TAG = "FagmentVideo";
+    public FagmentVideo() {
+
+        apiVideo = new ApiVideo(this);
         listState = new ArrayList<>();
     }
     public void setLink(String link){
         this.link = link;
-
     }
 
     @Override
@@ -65,11 +64,10 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
         View view = inflater.inflate(R.layout.fragment_trangchu,container,false);
         init(view);
         if(link!=null&&savedInstanceState==null){
-            apiXML.getDataXML(link);
+            apiVideo.getData(link);
         }
         return view;
     }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -81,23 +79,22 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if(savedInstanceState!=null) {
-            listState = (ArrayList<RssItem>) savedInstanceState.getSerializable("data");
+            listState = (ArrayList<Video>) savedInstanceState.getSerializable("data");
             Log.d(TAG, "onViewStateRestored: co du lieu");
             Log.d(TAG, "onViewStateRestored: " + listState.size());
             if (listState.size() == 0) {
-                apiXML.getDataXML(link);
+                apiVideo.getData(link);
             } else{
                 setDataRecyclerView(listState);
-             }
+            }
         }
     }
-
     private void init(View view){
 
         recyclerView = view.findViewById(R.id.recyleview_trangchu);
         linearLayoutManager = new LinearLayoutManager(getContext());
 
-//        layoutManager = new GridLayoutManager(getContext(), 2);
+//        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
 //        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 //            @Override
 //            public int getSpanSize(int position) {
@@ -120,23 +117,11 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(linearLayoutManager);
     }
-    @Override
-    public void setData(ArrayList<RssItem> listRssItem) {
-        setDataRecyclerView(listRssItem);
-        listState =listRssItem;
-        int i = 0;
-        for(RssItem rssItem: listRssItem){
-            if(i<5){
-                list.add(rssItem);
-            }
-            i++;
-        }
-    }
-    private void setDataRecyclerView(ArrayList<RssItem> listRssItem){
+    private void setDataRecyclerView(ArrayList<Video> listVideo){
         try {
 
-            adapterMain = new RecyclerAdapterMain(getContext(), this, listRssItem);
-            recyclerView.setAdapter(adapterMain);
+            adapterVideo = new RecyclerAdapterVideo(getContext(), this, listVideo);
+            recyclerView.setAdapter(adapterVideo);
         }catch (Exception e){
             Log.d(TAG, "setDataRecyclerView: "+link);
         }
@@ -144,19 +129,17 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
 
 
     }
+    @Override
+    public void setData(ArrayList<Video> listVideo) {
+        setDataRecyclerView(listVideo);
+        this.listState = listVideo;
+    }
 
     @Override
-    public void clickItem(int position, RssItem rssItem) {
-        DateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
-        String s = rssItem.getLinkImage();
-        Intent intent = new Intent(getActivity(), DetailActivity.class);
-        intent.putExtra("linkDetail",rssItem.getLinkDetail());
-        intent.putExtra("linkImage",s);
-        intent.putExtra("date",dateFormat.format(rssItem.getDate()));
-        intent.putExtra("title",rssItem.getTitle());
-        intent.putExtra("state", State.STATE_INTERNET);
-        intent.putExtra("list",list);
-        startActivity(intent);
-        getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+    public void clickItem(int position, Video video) {
+        Intent intent = new Intent(getActivity(), VideoActivity.class);
+        intent.putExtra("linkVideo",video.getLinkVideo());
+        intent.putExtra("position",position);
+        startActivity(intent  );
     }
 }

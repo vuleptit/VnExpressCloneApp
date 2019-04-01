@@ -33,9 +33,9 @@ dependencies {
     implementation 'com.r0adkll:slidableactivity:2.0.6'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
-
-    annotationProcessor 'android.arch.lifecycle:compiler:1.1.1';
-    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1';
-
+    annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     implementation 'com.intuit.sdp:sdp-android:1.0.5'
+    implementation 'com.google.android.exoplayer:exoplayer:r2.5.1'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 }

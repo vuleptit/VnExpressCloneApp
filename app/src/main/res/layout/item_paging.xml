@@ -2,16 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center"
     android:background="#F8F8F8">
     <TextView
-        android:paddingLeft="@dimen/_20sdp"
+        android:layout_margin="@dimen/_2sdp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center_vertical"
-        android:text="cùng chuyên mục"
-        android:layout_width="match_parent"
+        android:text="Cùng chuyên mục"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/_30sdp" />
     <View
         android:background="@color/colorPrimary"
-        android:layout_width="@dimen/_100sdp"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/_2sdp" />
 </LinearLayout>

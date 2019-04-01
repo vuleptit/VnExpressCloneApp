@@ -44,9 +44,21 @@ public class FragmentHome extends Fragment  implements ApiTheLoai.ApiTheLoaiData
     @Override
     public void setTheLoaiData(ArrayList<String> listName, ArrayList<String> listLink) {
         for (String link :listLink){
-            listFragment.add(new FagmentTrangChu(link));
+            Bundle bundle = new Bundle();
+            bundle.putString("link",link);
+            FagmentTrangChu fagmentTrangChu = new FagmentTrangChu();
+            fagmentTrangChu.setArguments(bundle);
+            listFragment.add(fagmentTrangChu);
             Log.d("link", link);
         }
+        Bundle bundle = new Bundle();
+        bundle.putString("link","http://ocp-api-v2.gdcvn.com/v1/publishers/get-items?id=120&limit=0&offset=20&publisher_key=zw5yfhcygiruH81M");
+        FagmentVideo fagmentVideo = new FagmentVideo();
+        fagmentVideo.setArguments(bundle);
+
+        listFragment.add(fagmentVideo);
+
+        listName.add("video");
         PagerAdapter pagerAdapter = new PagerAdapter(fragmentManager,listFragment,listName);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

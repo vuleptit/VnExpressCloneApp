@@ -13,19 +13,20 @@ import com.bumptech.glide.Glide;
 import com.example.recycler.R;
 import com.example.recycler.entity1.RssItem;
 import com.example.recycler.State;
+import com.example.recycler.entity1.Video;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class RecyclerAdapterMain extends RecyclerView.Adapter {
-    private ArrayList<RssItem> list;
+public class RecyclerAdapterVideo extends RecyclerView.Adapter {
+    private ArrayList<Video> list;
     private LayoutInflater layoutInflater;
     private Context context;
     private ClickListener clickListener;
     DateFormat dateFormat;
 
-    public RecyclerAdapterMain(Context context, ClickListener clickListener, ArrayList<RssItem> list) {
+    public RecyclerAdapterVideo(Context context, ClickListener clickListener, ArrayList<Video> list) {
         this.layoutInflater = LayoutInflater.from(context);
         this.list = list;
         this.context = context;
@@ -40,13 +41,13 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
         switch (i) {
             case State.STATE_VERTICAL:
                 view = layoutInflater.inflate(R.layout.item_vertical, viewGroup, false);
-                return new RecyclerAdapterMain.ViewHorderVertical(view);
+                return new ViewHorderVertical(view);
             case State.STATE_HORIZONTAL:
                 view = layoutInflater.inflate(R.layout.item_horizontal, viewGroup, false);
-                return new RecyclerAdapterMain.ViewHorderHorizontal(view);
+                return new ViewHorderHorizontal(view);
             case State.STATE_HOME:
                 view = layoutInflater.inflate(R.layout.item_home, viewGroup, false);
-                return new RecyclerAdapterMain.ViewHorderHome(view);
+                return new ViewHorderHome(view);
         }
         return null;
     }
@@ -57,7 +58,7 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
             ViewHorderHome viewHorderHome = (ViewHorderHome) viewHorder;
             viewHorderHome.title.setText(list.get(i).getTitle());
             viewHorderHome.date.setText(dateFormat.format(list.get(i).getDate()));
-            viewHorderHome.description.setText(list.get(i).getDescription());
+            viewHorderHome.description.setText("");
             Glide.with(context).load(list.get(i).getLinkImage()).into(viewHorderHome.imageView);
         } else {
 //            switch ((i-1) % 4) {
@@ -71,12 +72,17 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
 //                case 2:
 //                case 3:
 //                    ViewHorderHorizontal horderHorizontal = (ViewHorderHorizontal) viewHorder;
-//                    horderHorizontal.title.setText(list.get(i).getTitle());
+//                    if(list.get(i).getTitle().length()>50){
+//                        horderHorizontal.title.setText(list.get(i).getTitle().substring(0,50)+"...");
+//                    }
+//                    else {
+//                        horderHorizontal.title.setText(list.get(i).getTitle());
+//                    }
 //                    horderHorizontal.date.setText(dateFormat.format(list.get(i).getDate()));
 //                    Glide.with(context).load(list.get(i).getLinkImage()).into(horderHorizontal.imageView);
 //                    break;
-//
-//            }
+
+           // }
         }
     }
 
@@ -89,17 +95,18 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         if (position == 0) {
             return State.STATE_HOME;
-        } else {
+        }
+//        else {
 //            switch ((position - 1) % 4) {
 //                case 0:
 //                case 1:
-                    return State.STATE_VERTICAL;
+//                    return State.STATE_VERTICAL;
 //                case 2:
 //                case 3:
 //                    return State.STATE_HORIZONTAL;
 //            }
-        }
-       // return State.STATE_VERTICAL;
+//        }
+        return State.STATE_VERTICAL;
     }
 
     public class ViewHorderHorizontal extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -122,7 +129,7 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
 
     public class ViewHorderHome extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, date, description;
-        ImageView imageView;
+        ImageView imageView,icon;
 
         public ViewHorderHome(@NonNull View itemView) {
             super(itemView);
@@ -130,6 +137,8 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
             date = itemView.findViewById(R.id.tv_home_item_date);
             description = itemView.findViewById(R.id.tv_home_item_description);
             imageView = itemView.findViewById(R.id.img_home_item_img);
+            icon = itemView.findViewById(R.id.video_icon_home);
+            icon.setVisibility(View.VISIBLE);
             itemView.setOnClickListener(this);
         }
 
@@ -141,13 +150,15 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
 
     public class ViewHorderVertical extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView title, date;
-        ImageView imageView;
+        ImageView imageView,icon;
 
         public ViewHorderVertical(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_vertical_item_title);
             date = itemView.findViewById(R.id.tv_vertical_item_date);
             imageView = itemView.findViewById(R.id.img_vertical_item_img);
+            icon = itemView.findViewById(R.id.video_icon);
+            icon.setVisibility(View.VISIBLE);
             itemView.setOnClickListener(this);
         }
 
@@ -158,6 +169,6 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
     }
 
     public interface ClickListener {
-        public void clickItem(int position, RssItem rssItem);
+        public void clickItem(int position, Video video);
     }
 }

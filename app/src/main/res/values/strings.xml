@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">Recycler</string>
+    <string name="app_name">Đọc báo</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="home">Trang chủ</string>
+    <string name="download">Tin đã lưu</string>
+    <string name="history">Lịch sử</string>
+    <string name="setting">Cài đặt</string>
+    <string name="share">Chia sẻ</string>
+    <string name="send">Gửi</string>
 </resources>

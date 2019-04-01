@@ -32,6 +32,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class ApiXML {
     private DataApiXML dataApiXML;
     private DateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+    private static final String TAG = "ApiXML";
     public void getDataXML(final String link){
         AndroidNetworking.get(link).addQueryParameter("limit", "3").addHeaders("token", "1234").setTag("test")
                 .setPriority(Priority.HIGH)
@@ -90,13 +91,15 @@ public class ApiXML {
 
 
                     }
-                    Log.d("nam", list.get(10).getDescription());
                     dataApiXML.setData(list);
                 } catch (ParserConfigurationException e) {
+                    Log.d(TAG, "onResponse: ParserConfigurationException");
                     e.printStackTrace();
                 } catch (IOException e) {
+                    Log.d(TAG, "onResponse: IOException");
                     e.printStackTrace();
                 } catch (SAXException e) {
+                    Log.d(TAG, "onResponse: onResponse");
                     e.printStackTrace();
                 }
 

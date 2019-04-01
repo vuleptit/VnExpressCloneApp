@@ -108,7 +108,10 @@ public class RecyclerApdapterDetail extends RecyclerView.Adapter {
             case State.STATE_VERTICAL:
                 ViewHoderList horderList = (ViewHoderList) viewHorder;
                 horderList.textView.setText(list.get(i).getTextImage());
-                horderList.date.setText(dateFormat.format(list.get(i).getDate()));
+                if(list.get(i).getDate()!=null){
+                    horderList.date.setText(dateFormat.format(list.get(i).getDate()));
+                }
+
                 Glide.with(context).load(list.get(i).getLinkImage()).into(horderList.imageView);
 
                 break;

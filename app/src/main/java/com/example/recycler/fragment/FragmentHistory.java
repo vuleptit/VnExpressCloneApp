@@ -88,12 +88,14 @@ public class FragmentHistory extends Fragment implements HistoryAdapter.ClickLis
     public void onDestroy() {
         super.onDestroy();
         for (Article deletedItem:listDelete){
-            List<Description> listDescriptions = appDataBase.descriptionDao().getListImageDescription(deletedItem.getId());
-            for (Description description : listDescriptions) {
-                deleteFIle(description.getContent());
+            if(appDataBase.articleDao().getListName(deletedItem.getLinkImage()).size()<2){
+                List<Description> listDescriptions = appDataBase.descriptionDao().getListImageDescription(deletedItem.getId());
+                for (Description description : listDescriptions) {
+                    deleteFIle(description.getContent());
 
+                }
+                deleteFIle(deletedItem.getLinkImage());
             }
-            deleteFIle(deletedItem.getLinkImage());
             appDataBase.descriptionDao().deleteAll(deletedItem.getId());
             appDataBase.articleDao().delete(deletedItem);
         }

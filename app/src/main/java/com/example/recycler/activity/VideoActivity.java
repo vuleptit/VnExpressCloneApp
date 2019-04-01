@@ -85,13 +85,14 @@ public class VideoActivity extends AppCompatActivity  implements View.OnClickLis
     private Display display;
     private int width=0;
     private float volumeCurrent =0,volumeY;
-    private int volume;
+    private float volume;
     private TextView tvVolume;
     private AudioManager audioManager;
     private LinearLayout layoutVolume;
     private Video video;
     private int poisition;
     private VideoAdapter videoAdapter;
+    private boolean isShowPlay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +113,15 @@ public class VideoActivity extends AppCompatActivity  implements View.OnClickLis
          audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 //        volumeCurrent = audioManager.getStreamVolume(mExoPlayerView.getPlayer().getAudioStreamType());
 //        tvVolume.setText(volumeCurrent+"");
+        isShowPlay = true;
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isShowPlay = false;
+            }
+        }, 5000);
+
 
     }
 
@@ -337,20 +347,34 @@ public class VideoActivity extends AppCompatActivity  implements View.OnClickLis
                 y = event.getY();
 
                 width = display.getWidth();
-               // volumeCurrent =  mExoPlayerView.getPlayer().getVolume();
-                volumeCurrent = audioManager.getStreamVolume(mExoPlayerView.getPlayer().getAudioStreamType());
-                tvVolume.setText(volumeCurrent+"");
+                volumeCurrent =  mExoPlayerView.getPlayer().getVolume()*100;
+                //volumeCurrent = audioManager.getStreamVolume(mExoPlayerView.getPlayer().getAudioStreamType());
+//                tvVolume.setText(volumeCurrent+"");
                 Log.d(TAG, "onTouch: down"+volumeCurrent);
-                if(y>300){
+               // if(y>300){
                     volumeY = 2;
-                }else {
-                    volumeY = (y-50) / (100 - volumeCurrent);
-                }
+//                }else {
+////                    volumeY = (y-50) / volumeCurrent;
+//                }
             }
             if(action == MotionEvent.ACTION_UP){
                 Log.d(TAG, "onTouch: up");
                 if(isClick){
-                    mExoPlayerView.showController();
+                    if(!isShowPlay){
+                        layoutVolume.setVisibility(View.INVISIBLE);
+                        mExoPlayerView.showController();
+                        isShowPlay = true;
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                isShowPlay = false;
+                            }
+                        }, 5000);
+                    }else {
+                        isShowPlay = false;
+                        mExoPlayerView.hideController();
+                    }
                 }else {
                    // mExoPlayerView.getPlayer().setVolume(volume);
 
@@ -370,7 +394,10 @@ public class VideoActivity extends AppCompatActivity  implements View.OnClickLis
                 mY = (event.getY()-y);
                 Log.d(TAG, "onTouch: move" +event.getY());
                 if(mX>=10||mX<= -10||mY>=10||mY<= -10){
-                    if(isClick) layoutVolume.setVisibility(View.VISIBLE);
+                    if(layoutVolume.getVisibility()==View.INVISIBLE){
+                        layoutVolume.setVisibility(View.VISIBLE);
+                    }
+
                     isClick = false;
                 }else {
                     isClick = true;
@@ -382,8 +409,8 @@ public class VideoActivity extends AppCompatActivity  implements View.OnClickLis
                     volume = (volume>100)?100:volume;
                     volume = (volume<0)?0:volume;
                     tvVolume.setText(volume+"");
-                   // mExoPlayerView.getPlayer().setVolume(volume);
-                    audioManager.setStreamVolume(mExoPlayerView.getPlayer().getAudioStreamType(),volume,0);
+                    mExoPlayerView.getPlayer().setVolume((float)volume/100);
+
                 }
 
                

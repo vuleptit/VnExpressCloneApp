@@ -25,5 +25,7 @@ public interface ArticleDao {
     List<Article> getAllArticleState(int state);
     @Query("SELECT * FROM article ORDER BY id DESC LIMIT 1")
     Article getLastArticle();
+    @Query("SELECT * FROM article WHERE linkImage = :linkImg")
+    List<Article> getListName(String linkImg);
 
 }

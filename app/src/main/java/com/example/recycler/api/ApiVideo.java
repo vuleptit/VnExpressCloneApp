@@ -1,5 +1,7 @@
 package com.example.recycler.api;
 
+import android.util.Log;
+
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class ApiVideo {
     private DataApiVideo data;
     private DateFormat dateFormat;
+    private static final String TAG = "ApiVideo";
     public ApiVideo(DataApiVideo data) {
         this.data = data;
 
@@ -26,6 +29,7 @@ public class ApiVideo {
     }
 
     public void getData(final String link) {
+        Log.d(TAG, "onResponse: "+link);
         AndroidNetworking.get(link).addQueryParameter("limit", "3").addHeaders("token", "1234").setTag("test")
                 .setPriority(Priority.HIGH)
                 .build().getAsJSONObject(new JSONObjectRequestListener() {
@@ -44,7 +48,9 @@ public class ApiVideo {
                         video.setDate(dateFormat.parse(date));
                         list.add(video);
 
+
                     }
+                    Log.d(TAG, "onResponse: "+response);
                     data.setData(list);
                 } catch (JSONException e) {
                     e.printStackTrace();

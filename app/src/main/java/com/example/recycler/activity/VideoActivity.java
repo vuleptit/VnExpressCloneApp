@@ -135,6 +135,7 @@ public class VideoActivity extends AppCompatActivity  implements View.OnClickLis
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(new VideoAdapter(getApplicationContext(),this,new ArrayList<Video>()));
         apiVideo = new ApiVideo(this);
         apiVideo.getData("http://ocp-api-v2.gdcvn.com/v1/publishers/get-items?id=120&limit=0&offset=20&publisher_key=zw5yfhcygiruH81M");
     }
@@ -395,6 +396,7 @@ public class VideoActivity extends AppCompatActivity  implements View.OnClickLis
                 Log.d(TAG, "onTouch: move" +event.getY());
                 if(mX>=10||mX<= -10||mY>=10||mY<= -10){
                     if(layoutVolume.getVisibility()==View.INVISIBLE){
+                        mExoPlayerView.hideController();
                         layoutVolume.setVisibility(View.VISIBLE);
                     }
 

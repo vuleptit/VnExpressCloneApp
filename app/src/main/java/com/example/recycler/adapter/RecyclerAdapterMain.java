@@ -26,7 +26,6 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
     DateFormat dateFormat;
 
     public RecyclerAdapterMain(Context context, ClickListener clickListener, ArrayList<RssItem> list) {
-        this.layoutInflater = LayoutInflater.from(context);
         this.list = list;
         this.context = context;
         this.clickListener = clickListener;
@@ -37,6 +36,7 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view;
+        this.layoutInflater = LayoutInflater.from(context);
         switch (i) {
             case State.STATE_VERTICAL:
                 view = layoutInflater.inflate(R.layout.item_vertical, viewGroup, false);
@@ -156,7 +156,14 @@ public class RecyclerAdapterMain extends RecyclerView.Adapter {
             clickListener.clickItem(getAdapterPosition(), list.get(getAdapterPosition()));
         }
     }
-
+    public void update(ArrayList<RssItem> listRss){
+        list.addAll(listRss);
+        notifyDataSetChanged();
+    }
+    public void add(ArrayList<RssItem> listRss){
+        list.addAll(0,listRss);
+        notifyDataSetChanged();
+    }
     public interface ClickListener {
         public void clickItem(int position, RssItem rssItem);
     }

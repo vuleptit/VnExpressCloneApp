@@ -91,6 +91,7 @@ public class DetailActivity extends AppCompatActivity implements Api.ApiData, Vi
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(new RecyclerApdapterDetail(getApplicationContext(),new ArrayList<Content>(),this));
         listRss = new ArrayList<>();
 
     }

@@ -116,12 +116,13 @@ public class FagmentVideo extends Fragment implements ApiVideo.DataApiVideo,Recy
 //        });
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(linearLayoutManager);
+        adapterVideo = new RecyclerAdapterVideo(getContext(), this, new ArrayList<Video>());
+        recyclerView.setAdapter(adapterVideo);
     }
     private void setDataRecyclerView(ArrayList<Video> listVideo){
         try {
+            adapterVideo.update(listVideo);
 
-            adapterVideo = new RecyclerAdapterVideo(getContext(), this, listVideo);
-            recyclerView.setAdapter(adapterVideo);
         }catch (Exception e){
             Log.d(TAG, "setDataRecyclerView: "+link);
         }

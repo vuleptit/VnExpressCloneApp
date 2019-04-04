@@ -6,12 +6,12 @@
     android:background="#F8F8F8">
     <TextView
         android:layout_margin="@dimen/_2sdp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center_vertical"
         android:text="Cùng chuyên mục"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/_30sdp" />
+        android:layout_height="@dimen/_25sdp" />
     <View
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"

@@ -167,7 +167,10 @@ public class RecyclerAdapterVideo extends RecyclerView.Adapter {
             clickListener.clickItem(getAdapterPosition(), list.get(getAdapterPosition()));
         }
     }
-
+    public void update(ArrayList<Video> listVideo){
+        list.addAll(listVideo);
+        notifyDataSetChanged();
+    }
     public interface ClickListener {
         public void clickItem(int position, Video video);
     }

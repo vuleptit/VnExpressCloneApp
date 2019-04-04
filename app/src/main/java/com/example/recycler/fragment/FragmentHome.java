@@ -1,5 +1,8 @@
 package com.example.recycler.fragment;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,11 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.recycler.R;
 import com.example.recycler.adapter.PagerAdapter;
 import com.example.recycler.api.ApiTheLoai;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 public class FragmentHome extends Fragment  implements ApiTheLoai.ApiTheLoaiData{
@@ -33,6 +38,9 @@ public class FragmentHome extends Fragment  implements ApiTheLoai.ApiTheLoaiData
         return view;
     }
     private void init(View view){
+        if(!isConnectedToNetwork(getContext())){
+            Toast.makeText(getContext(), " không có kết nối internet", Toast.LENGTH_SHORT).show();
+        }
         listFragment = new ArrayList<>();
         viewPager = view.findViewById(R.id.viewpager);
         tabLayout = view.findViewById(R.id.tablayout);
@@ -62,5 +70,17 @@ public class FragmentHome extends Fragment  implements ApiTheLoai.ApiTheLoaiData
         PagerAdapter pagerAdapter = new PagerAdapter(fragmentManager,listFragment,listName);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+    public static boolean isConnectedToNetwork(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        boolean isConnected = false;
+        if (connectivityManager != null) {
+            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+            isConnected = (activeNetwork != null) && (activeNetwork.isConnectedOrConnecting());
+        }
+
+        return isConnected;
     }
 }

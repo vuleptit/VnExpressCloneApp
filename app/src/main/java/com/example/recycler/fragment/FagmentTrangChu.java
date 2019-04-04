@@ -3,9 +3,11 @@ package com.example.recycler.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +31,7 @@ import java.util.Locale;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,RecyclerAdapterMain.ClickListener{
+public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,RecyclerAdapterMain.ClickListener, SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView recyclerView;
     private ApiXML apiXML;
     private RecyclerAdapterMain recyclerAdapterMain;
@@ -40,6 +42,7 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
     private ArrayList<RssItem> listState;
     private RecyclerAdapterMain adapterMain;
     public static String TAG = "FagmentTrangChu";
+    private SwipeRefreshLayout swipeRefreshLayout;
     public FagmentTrangChu() {
         apiXML = new ApiXML();
         apiXML.setDataApiXML(this);
@@ -96,7 +99,7 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
 
         recyclerView = view.findViewById(R.id.recyleview_trangchu);
         linearLayoutManager = new LinearLayoutManager(getContext());
-
+        swipeRefreshLayout = view.findViewById(R.id.swipe_fragment);
 //        layoutManager = new GridLayoutManager(getContext(), 2);
 //        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 //            @Override
@@ -119,10 +122,28 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
 //        });
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setLayoutManager(linearLayoutManager);
+        adapterMain = new RecyclerAdapterMain(getContext(), this, new ArrayList<RssItem>());
+        recyclerView.setAdapter(adapterMain);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
     }
     @Override
     public void setData(ArrayList<RssItem> listRssItem) {
-        setDataRecyclerView(listRssItem);
+        if(adapterMain.getItemCount()==0) {
+            setDataRecyclerView(listRssItem);
+        }else {
+            Log.d(TAG, "setData: da chay");
+            ArrayList<RssItem> listRefresh = new ArrayList<>();
+            for(RssItem rssItem : listRssItem){
+                if(!rssItem.getTitle().equals(listState.get(0).getTitle())){
+                    listRefresh.add(rssItem);
+                }
+                else {
+                    break;
+                }
+            }
+            adapterMain.add(listRefresh);
+        }
         listState =listRssItem;
         int i = 0;
         for(RssItem rssItem: listRssItem){
@@ -134,11 +155,10 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
     }
     private void setDataRecyclerView(ArrayList<RssItem> listRssItem){
         try {
+            adapterMain.update(listRssItem);
 
-            adapterMain = new RecyclerAdapterMain(getContext(), this, listRssItem);
-            recyclerView.setAdapter(adapterMain);
         }catch (Exception e){
-            Log.d(TAG, "setDataRecyclerView: "+link);
+            Log.d(TAG, "setDataRecyclerView: "+ "lỗi rồi");
         }
 
 
@@ -158,5 +178,18 @@ public class FagmentTrangChu extends Fragment implements ApiXML.DataApiXML ,Recy
         intent.putExtra("list",list);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_left);
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // cancle the Visual indication of a refresh
+                swipeRefreshLayout.setRefreshing(false);
+                apiXML.getDataXML(link);
+                Log.d(TAG, "run: da chay refest");
+            }
+        }, 3000);
     }
 }

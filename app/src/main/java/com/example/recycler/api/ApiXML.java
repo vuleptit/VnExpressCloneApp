@@ -58,7 +58,7 @@ public class ApiXML {
                             try {
                                 if ("description".equals(nodeName)){
                                     String s = item.getLastChild().getNodeValue();
-                                    Log.d("data", s+"\n");
+                                    //Log.d("data", s+"\n");
                                     getJsoupData(rssItem,s);
                                      //Log.d("nam", getJsoupData(s));
                                 }

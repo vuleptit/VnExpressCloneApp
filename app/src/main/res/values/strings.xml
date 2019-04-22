@@ -5,7 +5,11 @@
     <string name="home">Trang chủ</string>
     <string name="download">Tin đã lưu</string>
     <string name="history">Lịch sử</string>
-    <string name="setting">Cài đặt</string>
+    <string name="login">Đăng nhập</string>
+    <string name="logout">Đăng xuất</string>
     <string name="share">Chia sẻ</string>
     <string name="send">Gửi</string>
+    <string name="fb_app_id">657159318070707</string>
+    <string name="fb_app_name">fb657159318070707</string>
+    <string name="fb_login_text">Đăng nhập bằng tài khoản facebook của bạn</string>
 </resources>

@@ -15,28 +15,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         >
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.facebook.login.widget.ProfilePictureView
             android:layout_gravity="center"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:background="@drawable/shadow"
             android:layout_centerInParent="true"
-            android:src="@drawable/anh1"
-            app:civ_border_color="@color/colorWhite"
-            app:civ_border_width="1dp"
+            android:src="@drawable/defaultuser"
             tools:ignore="MissingConstraints" />
-        <TextView
 
+        <TextView
             android:textStyle="bold"
             android:layout_marginTop="@dimen/_2sdp"
             android:textColor="@color/colorWhite"
             android:textSize="14sp"
             android:layout_gravity="center"
-            android:text="Đặng Phương Nam"
+            android:text="User Name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:id="@+id/user_text_login"/>
     </LinearLayout>
 
 </LinearLayout>
